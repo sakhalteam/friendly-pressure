@@ -77,7 +77,7 @@ export default function QuoteForm() {
         <form className="glass reveal" style={{ padding: 24, display: "grid", gap: 16 }} onSubmit={handleSubmit}>
           <div style={{ display: "grid", gap: 6 }}>
             <label htmlFor="name">Your name</label>
-            <input id="name" name="name" className="field" required placeholder="Jane Neighbor" />
+            <input id="name" name="name" className="field" required placeholder="Nomore Grimeplease" />
           </div>
           <div style={{ display: "grid", gap: 6 }}>
             <label htmlFor="phone">Phone or email</label>

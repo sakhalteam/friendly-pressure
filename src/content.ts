@@ -6,6 +6,10 @@
  * Anything marked TODO is a placeholder you'll want to fill in for real.
  */
 
+/** Prefix a /public asset path with the Vite base URL so it resolves on GH Pages. */
+export const assetUrl = (p: string) =>
+  `${import.meta.env.BASE_URL}${p.replace(/^\//, "")}`;
+
 export const business = {
   name: "Friendly Pressure",
   tagline: "Pressure washing, done with a smile.",
@@ -13,14 +17,16 @@ export const business = {
   // TODO: real business phone later. 555-WASH (555-9274) is a placeholder.
   phone: "555-WASH",
   phoneHref: "tel:555-9274",
-  // TODO: confirm your home base town for the service-area copy
-  homeBase: "Your Town",
+  // Kept intentionally vague (no home address broadcast). Tweak to taste.
+  homeBase: "the north Seattle area",
   owner: "Nic",
 };
 
 export const hero = {
-  // Big swing line. Honest, warm, a little cheeky — not "100% SATISFACTION GUARANTEED!!!"
-  headline: "Hi, I'm Nic. I make grimy things look new again.",
+  // Headline is split: the lead is plain gradient text; the grimy bit is rendered
+  // by <GrimeText> so you can spray it clean (and the emoji keeps its real colors).
+  headlineLead: "Hi, I'm Nic. I'll turn grimy into…",
+  headlineGrimy: "sublime-y… 😂",
   sub: "Friendly Pressure is just me, a good machine, and a genuine care for your property. No upsells, no corporate script — just careful work and a fair price.",
   primaryCta: "Get a free quote",
   secondaryCta: "See the before & afters",
@@ -71,37 +77,55 @@ export const services: Service[] = [
   },
 ];
 
-export type PriceRange = {
+export type PriceFactor = {
+  icon: string;
   label: string;
-  range: string;
   note: string;
 };
 
-// Real talk: these are ballparks, not contracts. Honest framing > fake precision.
+// Keep it simple & honest: a per-sq-ft rate that flexes with the real variables.
 export const pricing = {
   intro:
-    "Every property's different, so I won't pretend a price chart off the internet is accurate. Here's an honest ballpark — your real quote is free, fast, and based on your actual place.",
-  ranges: [
-    { label: "Driveway / walkway", range: "$80–$180", note: "Most single & double driveways" },
-    { label: "House soft-wash", range: "$200–$450", note: "Depends on size & stories" },
-    { label: "Deck or patio", range: "$120–$300", note: "By square footage & condition" },
-    { label: "Bundle it", range: "Save ~15%", note: "Driveway + house together = best value" },
-  ] as PriceRange[],
+    "I keep pricing simple and honest. Most jobs run by the square foot, and the rate flexes with the stuff that actually makes a job harder or easier.",
+  rate: "$0.35–$0.50",
+  rateUnit: "per sq ft",
+  factors: [
+    {
+      icon: "🦠",
+      label: "How much grime",
+      note: "A light haze is quick. Years of green-and-black gunk takes more passes.",
+    },
+    {
+      icon: "📦",
+      label: "Prep & access",
+      note: "Moving planters, furniture, grills, and working around tight spots.",
+    },
+    {
+      icon: "🪵",
+      label: "Surface & care",
+      note: "Delicate surfaces get a gentler, slower touch so they stay safe.",
+    },
+  ] as PriceFactor[],
+  inPerson:
+    "Rather I just come take a look and quote it in person? Totally fine — mention it in the quote form and I'll swing by, no charge.",
   footnote:
-    "No hidden fees. No “fuel surcharge” nonsense. If something changes once I'm on-site, I tell you before I do it — never after.",
+    "No hidden fees. No “fuel surcharge” nonsense. If anything changes once I'm on-site, you hear it from me before I do it — never after.",
 };
 
 export type BeforeAfter = {
   title: string;
-  // TODO: drop real photos in /public/gallery and point these there
+  // Paths are relative to the site base (BASE_URL is prefixed in the component).
   before: string;
   after: string;
 };
 
+// NOTE: before_01 / after_01 are placeholders reused across all three slots for
+// now. As you shoot real driveway/siding/patio jobs, drop them in
+// /public/photos and point each item at its own pair.
 export const gallery: BeforeAfter[] = [
-  { title: "Driveway", before: "", after: "" },
-  { title: "Siding", before: "", after: "" },
-  { title: "Back patio", before: "", after: "" },
+  { title: "Driveway", before: "photos/before_01.jpg", after: "photos/after_01.jpg" },
+  { title: "Siding", before: "photos/before_01.jpg", after: "photos/after_01.jpg" },
+  { title: "Back patio", before: "photos/before_01.jpg", after: "photos/after_01.jpg" },
 ];
 
 export const process = {
@@ -142,16 +166,25 @@ export const about = {
 
 export const serviceArea = {
   heading: "Where I work",
+  // Covered in grime on the live site — spray it clean with the nozzle cursor to
+  // reveal the map. Path is relative to base (BASE_URL prefixed in component).
+  image: "photos/service_area.png",
   intro:
     "Based in {homeBase} and happy to travel a reasonable distance. If you're a little outside the list, just ask — I'm flexible.",
-  // TODO: replace with your actual towns / neighborhoods
   towns: [
-    "Your Town",
-    "Neighbor Town",
-    "Lakeside",
-    "Riverbend",
-    "Oak Hills",
-    "Maplewood",
+    "Kenmore",
+    "Bothell",
+    "Martha Lake",
+    "Mill Creek",
+    "Edmonds",
+    "Lake Forest Park",
+    "Brier",
+    "Lynnwood",
+    "Esperance",
+    "Alderwood Manor",
+    "Mountlake Terrace",
+    "Woodway",
+    "Shoreline",
   ],
 };
 

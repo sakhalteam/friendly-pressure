@@ -1,4 +1,5 @@
 import Droplets from "../components/Droplets";
+import GrimeText from "../components/GrimeText";
 import { hero, business } from "../content";
 
 export default function Hero() {
@@ -26,10 +27,11 @@ export default function Hero() {
             maxWidth: "18ch",
             marginTop: 20,
             marginBottom: 0,
-            lineHeight: 1.02,
+            lineHeight: 1.04,
           }}
         >
-          <span className="h-gradient">{hero.headline}</span>
+          <span className="h-gradient">{hero.headlineLead} </span>
+          <GrimeText text={hero.headlineGrimy} />
         </h1>
 
         <p

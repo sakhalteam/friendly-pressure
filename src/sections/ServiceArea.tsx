@@ -1,19 +1,34 @@
+import { useState } from "react";
 import Section from "../components/Section";
-import { serviceArea, business } from "../content";
+import GrimeReveal from "../components/GrimeReveal";
+import Lightbox from "../components/Lightbox";
+import { serviceArea, business, assetUrl } from "../content";
 
 export default function ServiceArea() {
   const intro = serviceArea.intro.replace("{homeBase}", business.homeBase);
+  const [zoom, setZoom] = useState(false);
+  const img = assetUrl(serviceArea.image);
 
   return (
     <Section id="area" eyebrow="Where" title={serviceArea.heading}>
-      <p className="muted reveal" style={{ maxWidth: "60ch", marginBottom: 26 }}>
+      <p className="muted reveal" style={{ maxWidth: "60ch", marginBottom: 24 }}>
         {intro}
       </p>
 
-      <div
-        className="reveal"
-        style={{ display: "flex", flexWrap: "wrap", gap: 10 }}
-      >
+      {/* The grimy map — spray it clean to reveal the service area */}
+      <div className="reveal" style={{ marginBottom: 16 }}>
+        <GrimeReveal
+          src={img}
+          alt="Friendly Pressure service area map"
+          aspectRatio="16 / 9"
+          onActivate={() => setZoom(true)}
+        />
+        <p className="muted" style={{ fontSize: "0.82rem", marginTop: 8 }}>
+          👆 Go ahead — pressure wash the grime off and see where I roam.
+        </p>
+      </div>
+
+      <div className="reveal" style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
         {serviceArea.towns.map((t) => (
           <span
             key={t}
@@ -31,8 +46,25 @@ export default function ServiceArea() {
       </div>
 
       <p className="muted reveal" style={{ marginTop: 22, fontSize: "0.9rem" }}>
-        Not on the list? <a href="#quote" style={{ color: "var(--spray-soft)" }}>Ask anyway</a> — I'm flexible about a bit of a drive.
+        Not on the list?{" "}
+        <a href="#quote" style={{ color: "var(--spray-soft)" }}>
+          Ask anyway
+        </a>{" "}
+        — I'm flexible about a bit of a drive.
       </p>
+
+      <Lightbox open={zoom} onClose={() => setZoom(false)}>
+        <img
+          src={img}
+          alt="Friendly Pressure service area map"
+          style={{
+            maxWidth: "100%",
+            maxHeight: "90vh",
+            objectFit: "contain",
+            borderRadius: 12,
+          }}
+        />
+      </Lightbox>
     </Section>
   );
 }

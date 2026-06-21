@@ -1,21 +1,22 @@
+import { useState } from "react";
 import Section from "../components/Section";
-import { gallery } from "../content";
+import BeforeAfter from "../components/BeforeAfter";
+import Lightbox from "../components/Lightbox";
+import { gallery, assetUrl } from "../content";
 
 /**
- * Before & after. Each item shows a draggable slider when real photos exist;
- * until then it shows a friendly placeholder so layout looks right.
- * Drop photos in /public/gallery and set `before`/`after` paths in content.ts.
+ * Before & after — each card is a draggable wipe slider. Hit "expand" to open
+ * a bigger slider in a lightbox.
  */
 export default function Gallery() {
+  const [open, setOpen] = useState<number | null>(null);
+  const active = open === null ? null : gallery[open];
+
   return (
-    <Section
-      id="gallery"
-      eyebrow="Receipts"
-      title="Before & after"
-    >
+    <Section id="gallery" eyebrow="Receipts" title="Before & after">
       <p className="muted reveal" style={{ maxWidth: "60ch", marginBottom: 28 }}>
-        The fun part. Slide to see the difference — or just enjoy the satisfying
-        before/after. (Real photos going here as I knock out more jobs.)
+        The fun part. Drag the slider to wipe between the grime and the glory —
+        or hit expand for the full-size satisfaction.
       </p>
 
       <div
@@ -25,46 +26,55 @@ export default function Gallery() {
           gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
         }}
       >
-        {gallery.map((g) => (
-          <figure
-            key={g.title}
-            className="glass reveal"
-            style={{ margin: 0, padding: 14 }}
-          >
-            <div
-              className="shine"
-              style={{
-                position: "relative",
-                overflow: "hidden",
-                borderRadius: 12,
-                aspectRatio: "4 / 3",
-                background:
-                  g.before && g.after
-                    ? `url(${g.after}) center/cover`
-                    : "linear-gradient(135deg, #0e2a36, #123b4a)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {!(g.before && g.after) && (
-                <span className="muted" style={{ fontSize: "0.9rem" }}>
-                  📸 {g.title} — photo coming soon
-                </span>
-              )}
-            </div>
+        {gallery.map((g, i) => (
+          <figure key={i} className="glass reveal" style={{ margin: 0, padding: 14 }}>
+            <BeforeAfter
+              before={assetUrl(g.before)}
+              after={assetUrl(g.after)}
+              alt={g.title}
+            />
             <figcaption
               style={{
                 marginTop: 12,
-                fontWeight: 600,
-                fontSize: "0.95rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
               }}
             >
-              {g.title}
+              <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>{g.title}</span>
+              <button
+                type="button"
+                className="btn"
+                style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem" }}
+                onClick={() => setOpen(i)}
+              >
+                ⤢ Expand
+              </button>
             </figcaption>
           </figure>
         ))}
       </div>
+
+      <Lightbox open={open !== null} onClose={() => setOpen(null)}>
+        {active && (
+          <div style={{ width: "min(900px, 96vw)" }}>
+            <BeforeAfter
+              before={assetUrl(active.before)}
+              after={assetUrl(active.after)}
+              alt={active.title}
+            />
+            <p
+              style={{
+                textAlign: "center",
+                marginTop: 12,
+                fontWeight: 600,
+              }}
+            >
+              {active.title}
+            </p>
+          </div>
+        )}
+      </Lightbox>
     </Section>
   );
 }

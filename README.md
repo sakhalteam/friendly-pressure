@@ -32,12 +32,14 @@ touching components. Anything marked `TODO` is a placeholder to fill in for real
 
 ### 📝 Before this goes live — fill in:
 
-- [ ] **Contact info** — real business phone + email (`business` in `content.ts`)
+- [ ] **Real business phone** — `555-WASH` is a placeholder (`business.phone`)
+- [x] Business email — `FriendlyPressureWA@gmail.com`
 - [ ] **Home base town** + real **service-area towns** (`serviceArea`)
-- [ ] **Before/after photos** — drop images in `public/gallery/` and point
-      `gallery[]` in `content.ts` at them
 - [ ] **A photo of Nic** — set `about.photo`
 - [ ] **Sanity-check the pricing ranges** against what you actually charge
+- [ ] **Real per-job before/after photos** — right now `before_01`/`after_01`
+      are reused across all three gallery slots. Drop new pairs in
+      `public/photos/` and point each `gallery[]` item at its own pair.
 - [ ] (optional) **Real quote inbox** — swap the `mailto:` form for Formspree /
       Netlify Forms. See the upgrade note at the top of
       [`src/sections/QuoteForm.tsx`](src/sections/QuoteForm.tsx).
@@ -53,16 +55,26 @@ src/
     Nav.tsx             ← sticky top nav
     Section.tsx         ← section wrapper + scroll reveal
     Droplets.tsx        ← decorative falling-water effect
+    BeforeAfter.tsx     ← drag-to-wipe before/after slider
+    Lightbox.tsx        ← full-screen click-to-zoom modal
+    GrimeReveal.tsx     ← spray-off-the-grime minigame (canvas)
   sections/
     Hero.tsx  Services.tsx  Gallery.tsx  Pricing.tsx
     Process.tsx  About.tsx  ServiceArea.tsx  QuoteForm.tsx  Footer.tsx
 public/
   droplet.svg           ← favicon
-  nozzle.svg            ← spray-wand cursor (opt-in)
+  nozzle.svg            ← spray-wand cursor + grime-spray cursor
+  photos/               ← before_01, after_01, service_area
 ```
 
 ## Fun knobs to play with
 
+- **Grime minigame:** `<GrimeReveal src=… onActivate=… />` covers any image in
+  grime you spray off with the nozzle (hover on desktop; hold-to-wash button on
+  mobile; "Clear grime" escape hatch). Tune the cone size / clean threshold near
+  the top of [`GrimeReveal.tsx`](src/components/GrimeReveal.tsx). Currently on the
+  service-area map — drop it on anything.
+- **Before/after slider:** `<BeforeAfter before=… after=… />` — drag to wipe.
 - **Nozzle cursor:** add `className="nozzle-cursor"` to `<body>` (in `index.html`)
   or any element to turn the cursor into a spray wand.
 - **More/less rain:** `<Droplets count={N} />` — used in the hero, drop it

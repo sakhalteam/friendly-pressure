@@ -289,6 +289,76 @@ a {
   transform: translateX(120%);
 }
 
+/* Before/After slider label tags */
+.ba-tag {
+  position: absolute;
+  top: 10px;
+  z-index: 2;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--foam);
+  background: rgba(7, 20, 28, 0.6);
+  border: 1px solid var(--border);
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+
+/* Grime minigame */
+.grime-wrap {
+  border-radius: var(--radius);
+}
+
+.grime-hint {
+  position: absolute;
+  z-index: 3;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--foam);
+  background: rgba(7, 20, 28, 0.62);
+  border: 1px solid var(--border);
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  animation: hint-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* Soft circular spray glow that follows the nozzle while cleaning.
+   Size is set in JS to match the cleaning radius. */
+.spray-fx {
+  position: absolute;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.15s ease;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(180, 248, 255, 0.5),
+    rgba(120, 230, 255, 0.22) 55%,
+    transparent 78%
+  );
+  filter: blur(2px);
+  mix-blend-mode: screen;
+}
+
+@keyframes lb-fade {
+  from {
+    opacity: 0;
+  }
+}
+
 /* =======================================================
    Nozzle cursor (opt-in)
    Add class `nozzle-cursor` to <body> or any element to enable.

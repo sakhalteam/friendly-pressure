@@ -11,36 +11,71 @@ export default function Pricing() {
       <div
         style={{
           display: "grid",
-          gap: 16,
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: 18,
+          gridTemplateColumns: "minmax(0, 0.9fr) minmax(0, 1.4fr)",
+          alignItems: "stretch",
         }}
       >
-        {pricing.ranges.map((r) => (
-          <div key={r.label} className="glass glass-hover reveal" style={{ padding: 22 }}>
-            <div className="muted" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-              {r.label}
-            </div>
-            <div
-              style={{
-                fontSize: "1.9rem",
-                fontWeight: 800,
-                margin: "6px 0 4px",
-              }}
-              className="h-gradient"
-            >
-              {r.range}
-            </div>
-            <div className="muted" style={{ fontSize: "0.85rem" }}>
-              {r.note}
-            </div>
+        {/* The rate */}
+        <div
+          className="glass glass-hover reveal"
+          style={{
+            padding: 28,
+            display: "grid",
+            placeContent: "center",
+            textAlign: "center",
+          }}
+        >
+          <div className="muted" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
+            Typical rate
           </div>
-        ))}
+          <div
+            className="h-gradient"
+            style={{ fontSize: "clamp(2.4rem, 6vw, 3.4rem)", fontWeight: 900, margin: "6px 0" }}
+          >
+            {pricing.rate}
+          </div>
+          <div className="muted" style={{ fontSize: "1rem", fontWeight: 600 }}>
+            {pricing.rateUnit}
+          </div>
+        </div>
+
+        {/* What flexes the rate */}
+        <div className="reveal" style={{ display: "grid", gap: 14 }}>
+          {pricing.factors.map((f) => (
+            <div
+              key={f.label}
+              className="glass glass-hover"
+              style={{ padding: "16px 18px", display: "flex", gap: 14, alignItems: "flex-start" }}
+            >
+              <div style={{ fontSize: "1.6rem", lineHeight: 1 }} aria-hidden>
+                {f.icon}
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, marginBottom: 2 }}>{f.label}</div>
+                <div className="muted" style={{ fontSize: "0.92rem", lineHeight: 1.45 }}>
+                  {f.note}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <p
-        className="muted reveal"
-        style={{ marginTop: 24, fontSize: "0.92rem", maxWidth: "62ch" }}
+      <div
+        className="glass reveal"
+        style={{
+          marginTop: 18,
+          padding: "16px 20px",
+          borderColor: "rgba(94,234,212,0.35)",
+        }}
       >
+        <p style={{ fontSize: "0.98rem", lineHeight: 1.55 }}>
+          👋 {pricing.inPerson}
+        </p>
+      </div>
+
+      <p className="muted reveal" style={{ marginTop: 18, fontSize: "0.92rem", maxWidth: "64ch" }}>
         {pricing.footnote}
       </p>
     </Section>
