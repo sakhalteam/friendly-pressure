@@ -1,0 +1,359 @@
+/* index.css — Friendly Pressure
+   Water/ocean theme. Frosted glass + spray-cyan glows, dark-first.
+   Built to be expanded: drop new droplet/spray effects in the EFFECTS section. */
+
+@import "tailwindcss";
+
+/* =======================================================
+   Theme tokens
+   ======================================================= */
+:root {
+  --bg: #07141c; /* deep wet-asphalt navy */
+  --bg-elev: #0b1f2b;
+  --text: #eaf6fb;
+  --muted: #9fc0cf;
+  --border: rgba(122, 240, 255, 0.12);
+  --card: rgba(255, 255, 255, 0.045);
+
+  /* brand */
+  --spray: #38e1ff; /* bright nozzle spray cyan */
+  --spray-soft: #7af0ff;
+  --deep: #1fa8d6; /* deeper water blue */
+  --foam: #eaffff; /* clean foam white */
+  --sun: #ffd166; /* friendly warmth accent */
+  --mint: #5eead4; /* fresh / "after" green-teal */
+
+  --maxw: 1120px;
+  --radius: 18px;
+}
+
+/* =======================================================
+   Base
+   ======================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+/* Respect reduced-motion: kill the floaty stuff */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    scroll-behavior: auto;
+  }
+}
+
+/* =======================================================
+   Layout helpers
+   ======================================================= */
+.wrap {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 22px;
+}
+
+.section {
+  padding: 84px 0;
+  position: relative;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--spray-soft);
+  background: rgba(56, 225, 255, 0.08);
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+}
+
+.h-gradient {
+  background: linear-gradient(120deg, var(--foam), var(--spray) 55%, var(--mint));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* =======================================================
+   Background — layered ocean glow (fixed, behind everything)
+   ======================================================= */
+.gradient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(
+      1100px 720px at 18% -5%,
+      rgba(56, 225, 255, 0.22),
+      transparent 55%
+    ),
+    radial-gradient(
+      900px 650px at 88% 8%,
+      rgba(94, 234, 212, 0.16),
+      transparent 60%
+    ),
+    radial-gradient(
+      800px 800px at 60% 110%,
+      rgba(31, 168, 214, 0.18),
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--bg), #050e14);
+}
+
+/* subtle caustics / water-shimmer layer */
+.gradient-bg::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.05), transparent 8%),
+    radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.04), transparent 9%),
+    radial-gradient(circle at 45% 80%, rgba(255, 255, 255, 0.04), transparent 7%);
+  opacity: 0.6;
+  animation: shimmer 18s ease-in-out infinite alternate;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translate3d(2%, -2%, 0) scale(1.05);
+  }
+}
+
+/* =======================================================
+   Glass cards & surfaces
+   ======================================================= */
+.glass {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 12px 40px rgba(2, 12, 20, 0.35);
+}
+
+.glass-hover {
+  transition:
+    transform 0.18s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.glass-hover:hover {
+  transform: translateY(-3px);
+  border-color: rgba(56, 225, 255, 0.55);
+  box-shadow:
+    0 18px 50px rgba(2, 12, 20, 0.45),
+    0 0 0 1px rgba(56, 225, 255, 0.15),
+    0 0 30px rgba(56, 225, 255, 0.12);
+}
+
+/* =======================================================
+   Buttons
+   ======================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.8rem 1.3rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 225, 255, 0.6);
+}
+
+.btn.primary {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--spray), var(--deep));
+  color: #05222c;
+  box-shadow: 0 8px 26px rgba(56, 225, 255, 0.32);
+}
+
+.btn.primary:hover {
+  box-shadow: 0 12px 34px rgba(56, 225, 255, 0.5);
+}
+
+/* =======================================================
+   EFFECTS — water droplets, spray, etc.
+   Add new playful bits below. Keep them decorative &
+   pointer-events: none so they never block clicks.
+   ======================================================= */
+
+/* Falling droplet (used by <Droplets/>) */
+.droplet {
+  position: absolute;
+  top: -24px;
+  width: 8px;
+  height: 12px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: linear-gradient(180deg, var(--spray-soft), var(--deep));
+  opacity: 0.5;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(56, 225, 255, 0.4));
+  animation: drip linear infinite;
+}
+
+@keyframes drip {
+  0% {
+    transform: translateY(-10vh) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(115vh) scale(1);
+    opacity: 0;
+  }
+}
+
+/* "Clean swipe" — wipe a panel from grimy to fresh (handy for before/after) */
+.shine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+
+.shine:hover::before {
+  transform: translateX(120%);
+}
+
+/* =======================================================
+   Nozzle cursor (opt-in)
+   Add class `nozzle-cursor` to <body> or any element to enable.
+   Falls back gracefully — it's just a cursor. Swap the SVG in
+   /public/nozzle.svg later for a fancier one.
+   ======================================================= */
+.nozzle-cursor,
+.nozzle-cursor * {
+  cursor:
+    url("/nozzle.svg") 4 4,
+    crosshair;
+}
+
+/* =======================================================
+   Forms
+   ======================================================= */
+.field {
+  width: 100%;
+  padding: 0.8rem 0.95rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field::placeholder {
+  color: var(--muted);
+}
+
+.field:focus {
+  outline: none;
+  border-color: rgba(56, 225, 255, 0.7);
+  box-shadow: 0 0 0 3px rgba(56, 225, 255, 0.15);
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* =======================================================
+   Misc
+   ======================================================= */
+.muted {
+  color: var(--muted);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* gentle reveal on scroll-into-view (used via IntersectionObserver) */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
