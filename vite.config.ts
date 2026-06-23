@@ -4,5 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [tailwindcss(), react()],
-  base: "/friendly-pressure/",
+  // Relative base so the build works both at the custom domain root
+  // (friendlypressurewa.com) and at sakhalteam.github.io/friendly-pressure/.
+  base: "./",
 });
